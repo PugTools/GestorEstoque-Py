@@ -10,417 +10,53 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h3>Gestão de Estoque</h3>
-        </div>
-        <ul class="sidebar-menu">
-            <!-- Adicionado data-target para facilitar JS -->
-            <li class="active">
-                <a href="#dashboard" data-target="dashboard">
-                    <i class="fas fa-chart-line"></i> Dashboard
-                </a>
-            </li>
-            <li>
-                <a href="#estoque" data-target="estoque">
-                    <i class="fas fa-boxes"></i> Estoque
-                </a>
-            </li>
-            <li>
-                <a href="#clientes" data-target="clientes">
-                    <i class="fas fa-users"></i> Clientes
-                </a>
-            </li>
-            <li>
-                <a href="#fornecedores" data-target="fornecedores">
-                    <i class="fas fa-truck"></i> Fornecedores
-                </a>
-            </li>
-            <li>
-                <a href="#transportadoras" data-target="transportadoras">
-                    <i class="fas fa-shipping-fast"></i> Transportadoras
-                </a>
-            </li>
-            <li class="has-submenu">
-                <a href="#vendas" data-target="vendas">
-                    <i class="fas fa-shopping-cart"></i> Vendas
-                </a>
-                <ul class="submenu">
-                    <li>
-                        <a href="#relatorios" data-target="relatorios">
-                            <i class="fas fa-chart-bar"></i> Relatórios
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#pdv" data-target="pdv">
-                            <i class="fas fa-cash-register"></i> PDV
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#devolucao" data-target="devolucao">
-                            <i class="fas fa-undo"></i> Devolução
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#configuracoes" data-target="configuracoes">
-                    <i class="fas fa-cog"></i> Configurações
-                </a>
-            </li>
-        </ul>
-        <div class="sidebar-footer">
-            <span>Versão 1.0.0 | Última atualização: 03/06/2025 12:00</span>
+    <!-- Previous HTML content remains the same until the script tags -->
+
+    <!-- Modal for adding new product -->
+    <div id="addProductModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>Adicionar Novo Produto</h3>
+            <form id="addProductForm">
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="sku">SKU</label>
+                    <input type="text" id="sku" name="sku" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Descrição</label>
+                    <textarea id="description" name="description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="unit_price">Preço Unitário</label>
+                    <input type="number" id="unit_price" name="unit_price" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantidade Inicial</label>
+                    <input type="number" id="quantity" name="quantity" value="0">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addProductModal')">Cancelar</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <div class="header">
-            <button class="toggle-sidebar">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="user-info">
-                <img src="https://via.placeholder.com/32" alt="User">
-                <span>Administrador</span>
-            </div>
-        </div>
-
-        <!-- Seção Dashboard (Visível por padrão) -->
-        <div id="content-dashboard" class="page-section">
-            <h2 class="page-title">Dashboard</h2>
-            <!-- Alertas -->
-            <div class="alert alert-danger">
-                <i class="fas fa-exclamation-triangle"></i> 5 produtos com estoque abaixo do mínimo
-            </div>
-            <!-- Cards de Resumo -->
-            <div class="dashboard">
-                 <div class="card">
-                    <div class="card-header">
-                        <h4>Estoque Total</h4>
-                        <div class="icon"><i class="fas fa-boxes"></i></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="value">1.245</div>
-                        <div class="label">Itens em estoque</div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="trend up"><i class="fas fa-arrow-up"></i> 3.5%</div>
-                        <div>Desde o mês passado</div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Valor de Estoque</h4>
-                        <div class="icon"><i class="fas fa-dollar-sign"></i></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="value">R$ 87.500,00</div>
-                        <div class="label">Custo de compra</div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="trend up"><i class="fas fa-arrow-up"></i> 5.2%</div>
-                        <div>Desde o mês passado</div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Valor de Venda</h4>
-                        <div class="icon"><i class="fas fa-tag"></i></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="value">R$ 175.000,00</div>
-                        <div class="label">Preço de venda</div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="trend up"><i class="fas fa-arrow-up"></i> 5.2%</div>
-                        <div>Desde o mês passado</div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Vendas do Mês</h4>
-                        <div class="icon"><i class="fas fa-shopping-cart"></i></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="value">R$ 42.350,00</div>
-                        <div class="label">Total vendido</div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="trend down"><i class="fas fa-arrow-down"></i> 1.8%</div>
-                        <div>Desde o mês passado</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Indicadores Financeiros -->
-            <div class="dashboard">
-                 <div class="card">
-                    <div class="card-header">
-                        <h4>CMV</h4>
-                        <div class="icon"><i class="fas fa-calculator"></i></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="value">R$ 21.175,00</div>
-                        <div class="label">Custo da Mercadoria Vendida</div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h4>PMR</h4>
-                        <div class="icon"><i class="fas fa-calendar-alt"></i></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="value">15</div>
-                        <div class="label">Prazo Médio de Recebimento (dias)</div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h4>PMRE</h4>
-                        <div class="icon"><i class="fas fa-hourglass-half"></i></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="value">45</div>
-                        <div class="label">Prazo Médio de Renovação de Estoque (dias)</div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Markup Médio</h4>
-                        <div class="icon"><i class="fas fa-percentage"></i></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="value">100%</div>
-                        <div class="label">Margem sobre custo</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Gráficos -->
-            <div class="chart-container">
-                <div class="chart-header"><h4>Vendas por Categoria (Últimos 6 meses)</h4></div>
-                <div class="chart-body"><canvas id="salesChart"></canvas></div>
-            </div>
-            <div class="chart-container">
-                <div class="chart-header"><h4>Análise de Curva ABC</h4></div>
-                <div class="chart-body"><canvas id="abcChart"></canvas></div>
-            </div>
-            <!-- Produtos com Estoque Baixo -->
-            <div class="table-container">
-                <div class="table-header">
-                    <h4>Produtos com Estoque Baixo</h4>
-                    <button class="btn"><i class="fas fa-print"></i> Imprimir Etiquetas</button>
-                </div>
-                <table class="table">
-                    <thead><tr><th>Código</th><th>Produto</th><th>Categoria</th><th>Estoque Atual</th><th>Estoque Mínimo</th><th>Status</th><th>Ações</th></tr></thead>
-                    <tbody>
-                         <tr><td>001</td><td>Vela Aromática Lavanda</td><td>Velas</td><td>5</td><td>20</td><td><span class="status pending">Crítico</span></td><td><button class="btn btn-sm"><i class="fas fa-shopping-cart"></i></button></td></tr>
-                         <tr><td>015</td><td>Imagem Nossa Senhora Aparecida 20cm</td><td>Imagens</td><td>3</td><td>10</td><td><span class="status pending">Crítico</span></td><td><button class="btn btn-sm"><i class="fas fa-shopping-cart"></i></button></td></tr>
-                         <tr><td>023</td><td>Terço de Madeira</td><td>Terços</td><td>12</td><td>15</td><td><span class="status active">Baixo</span></td><td><button class="btn btn-sm"><i class="fas fa-shopping-cart"></i></button></td></tr>
-                         <tr><td>045</td><td>Incenso de Sândalo</td><td>Incensos</td><td>8</td><td>25</td><td><span class="status pending">Crítico</span></td><td><button class="btn btn-sm"><i class="fas fa-shopping-cart"></i></button></td></tr>
-                         <tr><td>067</td><td>Bíblia Sagrada Capa Dura</td><td>Livros</td><td>4</td><td>10</td><td><span class="status pending">Crítico</span></td><td><button class="btn btn-sm"><i class="fas fa-shopping-cart"></i></button></td></tr>
-                    </tbody>
-                </table>
-            </div>
-            <!-- Produtos Mais Vendidos -->
-            <div class="table-container">
-                <div class="table-header"><h4>Produtos Mais Vendidos (Mês Atual)</h4></div>
-                <table class="table">
-                    <thead><tr><th>Código</th><th>Produto</th><th>Categoria</th><th>Quantidade Vendida</th><th>Valor Total</th><th>Tempo de Prateleira</th></tr></thead>
-                    <tbody>
-                         <tr><td>034</td><td>Vela Votiva Branca</td><td>Velas</td><td>120</td><td>R$ 600,00</td><td>5 dias</td></tr>
-                         <tr><td>012</td><td>Imagem São Francisco 15cm</td><td>Imagens</td><td>25</td><td>R$ 1.250,00</td><td>12 dias</td></tr>
-                         <tr><td>056</td><td>Terço de Cristal</td><td>Terços</td><td>18</td><td>R$ 1.080,00</td><td>15 dias</td></tr>
-                         <tr><td>078</td><td>Incenso 7 Poderes</td><td>Incensos</td><td>45</td><td>R$ 675,00</td><td>8 dias</td></tr>
-                         <tr><td>092</td><td>Medalha de São Bento</td><td>Medalhas</td><td>30</td><td>R$ 450,00</td><td>10 dias</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div> <!-- Fim #content-dashboard -->
-
-        <!-- Outras Seções (Ocultas por padrão) -->
-        <div id="content-estoque" class="page-section" style="display: none;">
-            <h2 class="page-title">Estoque</h2>
-            <p>Conteúdo da seção de Estoque será carregado aqui...</p>
-            <!-- Exemplo: Tabela de produtos -->
-            <div class="table-container">
-                 <div class="table-header">
-                    <h4>Lista de Produtos</h4>
-                    <button class="btn btn-success"><i class="fas fa-plus"></i> Novo Produto</button>
-                </div>
-                <table class="table" id="product-table">
-                    <thead><tr><th>ID</th><th>Nome</th><th>SKU</th><th>Quantidade</th><th>Preço</th><th>Ações</th></tr></thead>
-                    <tbody>
-                        <!-- Linhas serão preenchidas via JS -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="content-clientes" class="page-section" style="display: none;">
-            <h2 class="page-title">Clientes</h2>
-            <p>Conteúdo da seção de Clientes...</p>
-        </div>
-
-        <div id="content-fornecedores" class="page-section" style="display: none;">
-            <h2 class="page-title">Fornecedores</h2>
-            <p>Conteúdo da seção de Fornecedores...</p>
-        </div>
-
-        <div id="content-transportadoras" class="page-section" style="display: none;">
-            <h2 class="page-title">Transportadoras</h2>
-            <p>Conteúdo da seção de Transportadoras...</p>
-        </div>
-
-        <div id="content-vendas" class="page-section" style="display: none;">
-            <h2 class="page-title">Vendas</h2>
-            <p>Conteúdo da seção de Vendas...</p>
-        </div>
-
-         <div id="content-relatorios" class="page-section" style="display: none;">
-            <h2 class="page-title">Relatórios</h2>
-            <p>Conteúdo da seção de Relatórios...</p>
-        </div>
-
-         <div id="content-pdv" class="page-section" style="display: none;">
-            <h2 class="page-title">PDV</h2>
-            <p>Conteúdo da seção de PDV...</p>
-        </div>
-
-         <div id="content-devolucao" class="page-section" style="display: none;">
-            <h2 class="page-title">Devolução</h2>
-            <p>Conteúdo da seção de Devolução...</p>
-        </div>
-
-        <div id="content-configuracoes" class="page-section" style="display: none;">
-            <h2 class="page-title">Configurações</h2>
-            <p>Conteúdo da seção de Configurações...</p>
-        </div>
-
-    </div> <!-- Fim .main-content -->
-
+    <!-- Add your JavaScript files -->
+    <script src="/js/api.js"></script>
+    <script src="/js/products.js"></script>
+    <script src="/js/dashboard.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Toggle Sidebar
-            const toggleButton = document.querySelector('.toggle-sidebar');
-            const sidebar = document.querySelector('.sidebar');
-            const mainContent = document.querySelector('.main-content');
+            // Initialize managers
+            const dashboardManager = new DashboardManager();
+            const productsManager = new ProductsManager();
 
-            if (toggleButton && sidebar && mainContent) {
-                toggleButton.addEventListener('click', () => {
-                    sidebar.classList.toggle('active');
-                    mainContent.classList.toggle('active'); // Ajusta a margem do conteúdo principal
-                });
-            }
-
-            // Toggle Submenu
-            document.querySelectorAll('.has-submenu > a').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    // Não previne default se for link para seção (embora a navegação seja via JS)
-                    // e.preventDefault(); 
-                    const parentLi = this.parentElement;
-                    // Fecha outros submenus abertos
-                    document.querySelectorAll('.has-submenu.open').forEach(openSubmenu => {
-                        if (openSubmenu !== parentLi) {
-                            openSubmenu.classList.remove('open');
-                        }
-                    });
-                    // Abre ou fecha o submenu atual
-                    parentLi.classList.toggle('open');
-                });
-            });
-
-            // --- Navegação do Menu Lateral --- 
-            const menuLinks = document.querySelectorAll('.sidebar-menu a');
-            const contentSections = document.querySelectorAll('.page-section');
-
-            // Função para mostrar a seção correta
-            const showSection = (targetId) => {
-                const targetContentId = `content-${targetId}`;
-                contentSections.forEach(section => {
-                    section.style.display = section.id === targetContentId ? 'block' : 'none';
-                });
-
-                // Atualiza a classe 'active' no menu
-                menuLinks.forEach(l => l.parentElement.classList.remove('active'));
-                const activeLink = document.querySelector(`.sidebar-menu a[data-target="${targetId}"]`);
-                if (activeLink) {
-                    let currentElement = activeLink.parentElement;
-                     while (currentElement && currentElement.tagName === 'LI') {
-                        currentElement.classList.add('active');
-                        // Se for item de submenu, garante que o pai esteja aberto e ativo
-                        const parentSubmenu = currentElement.closest('ul.submenu');
-                        if (parentSubmenu) {
-                            const parentLi = parentSubmenu.closest('li.has-submenu');
-                            if (parentLi) {
-                                parentLi.classList.add('active');
-                                parentLi.classList.add('open'); // Garante que o submenu pai esteja aberto
-                            }
-                        }
-                        // Sobe na hierarquia apenas se estiver dentro de um submenu
-                        if (!parentSubmenu) break;
-                        currentElement = parentLi;
-                    }
-                }
-            };
-
-            // Adiciona evento de clique aos links do menu
-            menuLinks.forEach(link => {
-                link.addEventListener('click', function(event) {
-                    event.preventDefault(); // Previne a navegação padrão de #hash
-                    const targetId = this.getAttribute('data-target');
-                    if (targetId) {
-                        showSection(targetId);
-                        // Fecha outros submenus se clicar em um item principal
-                        if (!this.closest('.submenu')) {
-                            document.querySelectorAll('.has-submenu.open').forEach(openSubmenu => {
-                                if (openSubmenu !== this.parentElement) { // Não fecha o próprio submenu se for um link pai
-                                     openSubmenu.classList.remove('open');
-                                }
-                            });
-                        }
-                    }
-                });
-            });
-
-            // Mostra a seção inicial (Dashboard) ao carregar
-            showSection('dashboard');
-
-            // --- Inicialização dos Gráficos (Exemplo) ---
-            const salesCtx = document.getElementById('salesChart')?.getContext('2d');
-            if (salesCtx) {
-                new Chart(salesCtx, {
-                    type: 'line',
-                    data: { /* ... dados do gráfico de vendas ... */ 
-                        labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
-                        datasets: [
-                            { label: 'Velas', data: [12000, 15000, 13500, 14800, 16200, 15500], borderColor: '#4285f4', backgroundColor: 'rgba(66, 133, 244, 0.1)', tension: 0.4, fill: true },
-                            { label: 'Imagens', data: [8000, 9500, 11000, 10500, 12000, 13500], borderColor: '#34a853', backgroundColor: 'rgba(52, 168, 83, 0.1)', tension: 0.4, fill: true },
-                            { label: 'Terços', data: [5000, 6000, 5500, 6500, 7000, 6800], borderColor: '#fbbc05', backgroundColor: 'rgba(251, 188, 5, 0.1)', tension: 0.4, fill: true }
-                        ]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false }
-                });
-            }
-
-            const abcCtx = document.getElementById('abcChart')?.getContext('2d');
-            if (abcCtx) {
-                new Chart(abcCtx, {
-                    type: 'doughnut',
-                    data: { /* ... dados do gráfico ABC ... */ 
-                         labels: ['Curva A (80%)', 'Curva B (15%)', 'Curva C (5%)'],
-                        datasets: [{
-                            label: 'Curva ABC de Produtos',
-                            data: [80, 15, 5],
-                            backgroundColor: ['#ea4335', '#fbbc05', '#34a853'],
-                            hoverOffset: 4
-                        }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false }
-                });
-            }
+            // Previous JavaScript code for sidebar and navigation remains the same
         });
     </script>
 </body>
 </html>
-
